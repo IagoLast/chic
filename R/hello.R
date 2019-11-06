@@ -30,8 +30,25 @@ binarizeMedian <- function(data) {
 #'
 #' @param data x A numeric dataframe of length n
 #' @param data y A numeric dataframe of length n
-prePost <- function(x, y, main) {
-  plot(c(0, 0), c(0,0), type="n", xlab="Time", ylab="TILS", xlim=c(1, 2), ylim=c(min(y), max(y)*1.2), xaxt = "n", main = main)
+prePost <- function(x, y, main="PRE/POST", ylab="", xlab="", labels=c('PRE', 'POST')) {
+  if(length(x) != length(y)) {
+    stop('Data has to have the same length in order to plot the pre/post graph.')
+  }
+
+  plot(
+    c(0, 0),
+    c(0,0),
+    type="n",
+    xlab=xlab,
+    ylab=ylab,
+    xlim=c(0.95, 2.05),
+    ylim=c( min( min(x, na.rm=T), min(y, na.rm=T)), max(max(x, na.rm=T), max(y, na.rm=T))),
+    xaxt = "n",
+    main = main
+  )
+
+  # Add x ticks
+  axis(1, at=c(1, 2), labels=labels)
 
   for(i in 1:length(x)){
     lines(c(x[i], y[i]), col=ifelse(x[i]>y[i],"green2", ifelse(x[i]==y[i],"blue", "red")))
