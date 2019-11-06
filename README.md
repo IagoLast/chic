@@ -1,7 +1,6 @@
-# Chic
+# Chic
 
 Easy to use library with some clinical methods.
-
 
 # Getting Started
 
