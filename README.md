@@ -6,6 +6,7 @@ Easy to use library with some clinical methods.
 
 In order to use this package you need to install the  `devtools` package first:
 
+
 ## Install devtools
 
 ```r
