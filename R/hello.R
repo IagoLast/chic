@@ -26,6 +26,27 @@ binarizeMedian <- function(data) {
   lapply(data, function(x) highLow(x, median(data)))
 }
 
+
+preparePrePostData <- function(data, patiend_id_name, timepoint_label, pre_name, post_name, variable_name) {
+  clean <- data.frame();
+
+  for (id in unique(data[[patiend_id_name]])) {
+
+    i <- data[data[[patiend_id_name]] == id, c(timepoint_label, variable_name)]
+
+    itemPre   <- suppressWarnings(as.numeric(i[ i[[timepoint_label]] == pre_name,  variable_name ]))
+    itemPost  <- suppressWarnings(as.numeric(i[ i[[timepoint_label]] == post_name, variable_name ]))
+
+    if(!is.na(itemPre) && !is.na(itemPost) ) {
+      newItem <- data.frame(itemPre, itemPost)
+      names(newItem)<-c("PRE","POST")
+      clean <- rbind(clean, newItem)
+    }
+  }
+
+  return(clean)
+}
+
 #' Draw a pre-post line for 2 given dataframes.
 #'
 #' @param data x A numeric dataframe of length n
@@ -50,7 +71,27 @@ prePost <- function(x, y, main="PRE/POST", ylab="", xlab="", labels=c('PRE', 'PO
   # Add x ticks
   axis(1, at=c(1, 2), labels=labels)
 
+
+
+
+
   for(i in 1:length(x)){
-    lines(c(x[i], y[i]), col=ifelse(x[i]>y[i],"green2", ifelse(x[i]==y[i],"blue", "red")))
+    color <- "gray";
+
+    if (x[i] > 10) {
+      color <- "red"
+    } else {
+      color <- "green"
+    }
+
+    lines(c(x[i], y[i]), col=color)
   }
 }
+
+
+chic_pre_post <- function(data, patient_id_name, timepoint_label, pre_name, post_name, variable_name) {
+  
+  d <- preparePrePostData(data, patient_id_name, timepoint_label, pre_name, post_name, variable_name);
+  prePost(d$PRE, d$POST, main="PRE/POST", ylab=variable_name, xlab="", labels=c('PRE', 'POST'))
+}
+
