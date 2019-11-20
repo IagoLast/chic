@@ -10,14 +10,14 @@ In order to use this package you need to install the  `devtools` package first:
 ## Install devtools
 
 ```r
-instal.package('devtools');
+install.packages("devtools")
 library(devtools)
 ```
 
 ## Install Chic
 
 ```r
-install.github('IagoLast/chic')
+install_github("iagolast/chic")
 library(chic)
 ```
 
